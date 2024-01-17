@@ -9,8 +9,8 @@ import { useDispatch } from "react-redux";
 export default function Loginpage() {
     var AWS = require('aws-sdk')
     AWS.config.update({
-          accessKeyId: 'AKIAS6DVPXJSFGGMPOGW',
-          secretAccessKey: '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',
+          accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+          secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
           region: 'eu-north-1', 
     })
     const docClient = new AWS.DynamoDB.DocumentClient();
@@ -30,6 +30,8 @@ export default function Loginpage() {
     }
 
     function checkIfUserExists(userId){
+        console.log('hello world')
+        console.log(process.env.REACT_APP_AWS_ACCESS_KEY_ID +" id")
         const params = {
             TableName: 'oly-tracking',
             KeyConditionExpression: 'userID = :userId',
