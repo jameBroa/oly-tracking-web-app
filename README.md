@@ -1,7 +1,7 @@
 # Olympic Lifting Fitness Tracker App
 
 # The idea
-This project aim was primarily to get me used to connectin to AWS services to retrieve information from the DynamoDB service.
+This project aim was primarily to get me used to connecting to AWS services to retrieve information from the DynamoDB service.
 
 It is also a good stab at making a web application for phones in particular, as a stepping stone before trying React-Native.
 
@@ -30,7 +30,7 @@ It is also a good stab at making a web application for phones in particular, as 
 - Table of contents for all lifts
 
 ## Figma designs:
-
+![alt text](image-3.png)
 
 
 
