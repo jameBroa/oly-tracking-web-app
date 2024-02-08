@@ -3,10 +3,19 @@ import '../styles/loginpage.css';
 import { motion } from "framer-motion"
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {createStore} from 'react-redux';
+import {addUser} from '../actions/userActions';
 
 
 export default function Loginpage() {
+
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user)
+
+
+
+
     var AWS = require('aws-sdk')
     AWS.config.update({
           accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
@@ -15,13 +24,25 @@ export default function Loginpage() {
     })
     const docClient = new AWS.DynamoDB.DocumentClient();
 
+    
+
 
     const [loginClicked, setLoginClicked] = useState(false);
     const [userId, setUserId] = useState("");
     const navigate = useNavigate();
 
+    const reducer = (state = null, action) => {
+        switch(action.type){
+            case 'ADD_USER':
+                return userId
+            default:
+                return userId
+        }
+    }
+
     const handleUserIdChange = (e) => {
         setUserId(e.target.value);
+
     }
 
     const handleLoginClick = () => {
@@ -46,7 +67,7 @@ export default function Loginpage() {
               if (data.Items.length > 0) {
                 console.log(`Entry for User ID ${userId} exists.`);
                 console.log(data.Items)
-
+                dispatch(addUser(userId))
                 navigate("/dashboard", {state: data.Items})
               } else {
                 console.log(`No entry found for User ID ${userId}.`);

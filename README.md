@@ -1,3 +1,43 @@
+# Olympic Lifting Fitness Tracker App
+
+# The idea
+This project aim was primarily to get me used to connectin to AWS services to retrieve information from the DynamoDB service.
+
+It is also a good stab at making a web application for phones in particular, as a stepping stone before trying React-Native.
+
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
+
+## Technology used
+- Modern UI (MUI) Library for styling
+- Framer motion for animation
+- Chart.js for chart display
+- AWS DynamoDB for database
+- Figma for mockup designs
+
+## Current Features
+- For a registered user (not authentication), view and add lifts to Snatch and CJ
+
+## Bugs
+- Date on adding information is buggy
+- Only adjusted screen size for phone (viewing Desktop is ugly)
+
+## New Features
+- Add multiple lifts per session (and adding highest lift to graph)
+- Ability to select variation of lift (complexes)
+- State management with Redux
+- Table of contents for all lifts
+
+## Figma designs:
+
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

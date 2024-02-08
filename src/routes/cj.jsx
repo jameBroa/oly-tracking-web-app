@@ -1,5 +1,5 @@
 
-import { Paper, Stack, TextField, Typography } from '@mui/material';
+import { Button, Paper, Stack, TextField, Typography } from '@mui/material';
 import '../styles/dashboard.css';
 import Linegraph from '../components/linegraph';
 import { Navigate, useLocation, useNavigate } from 'react-router';
@@ -35,51 +35,57 @@ export default function Cj() {
 
         if(entryValue){
 
-        
+            setEntryToggle(!addEntryToggle)
+            const params = {
+                TableName: 'oly-tracking',
+                Item: {
+                    userID: userData[0].userID,
+                    date: '31/12/23',
+                    exercise: 'cj',
+                    weightlifted: entryValue
+                },
+
+            }
+
+            var AWS = require('aws-sdk')
+            AWS.config.update({
+            accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+            region: 'eu-north-1', 
+            })
+            const docClient = new AWS.DynamoDB.DocumentClient();
 
 
-
-        setEntryToggle(!addEntryToggle)
-        const params = {
-            TableName: 'oly-tracking',
-            Item: {
-                userID: userData[0].userID,
-                date: '31/12/23',
-                exercise: 'cj',
-                weightlifted: entryValue
-            },
-
-        }
-
-        var AWS = require('aws-sdk')
-        AWS.config.update({
-          accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-          secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-          region: 'eu-north-1', 
-        })
-        const docClient = new AWS.DynamoDB.DocumentClient();
-
-
-       try{
+        try {
             const data = await docClient.put(params).promise();
-       } catch(error) {
-            console.error(error)
-       }
-        
-
-        
-
-        navigate("/cj")
+        } catch(error) {
+                console.error(error)
+            }
+            
+            navigate("/cj")
+        }
     }
 
+    const goBack = (e) => {
+        navigate("/")
     }
 
-    console.log(userData)
 
     return(
         <div className="bgDash">
-            <Stack direction={"column"} mr={2} ml={2} pt={1} spacing={2} sx={{width:'full', height:'844px'}}>
+            <Stack direction={"column"} mr={2} ml={2} pt={1} spacing={2} sx={{width:'full', height:'100%'}}>
+    
                 <Typography variant="h3" sx={{fontSize:'24px', color:'white', fontWeight:'300'}}>Oly Tracking</Typography>
+                <motion.div
+                    whileHover={{scale:1.025, x:[10]}}
+                    initial={{x:0}}>
+                    <Paper onClick={goBack}sx={{cursor:'pointer', height:'45px', width:'80px', borderRadius:'20px', background:'linear-gradient(90deg, #9469FF, #3968FE)'}}>
+                        <Stack direction="row" pl={1} sx={{height:'100%', width:'100%', alignItems:'center'}}>
+                            <Typography sx={{color:'white'}}>Go Back</Typography>
+                        </Stack>
+                    </Paper>
+                </motion.div>
+                
                 <Typography sx={{fontSize:'32px', color:'white', fontWeight:'300'}}>Clean and Jerk</Typography>
                 <Paper sx={{height:'260px', width:'100%', background: 'linear-gradient(90deg, #9469FF, #3968FE)', borderRadius:'20px'}}>
                     <Stack pt={0.5} direction="row" justifyContent={'space-between'}>
@@ -98,13 +104,13 @@ export default function Cj() {
                         
                         
                         }} whileHover={{scale:1.1}}>
-                    <Paper sx={{height:'75px', background: 'linear-gradient(90deg, #9469FF, #3968FE)', borderRadius:'20px'}}>
+                    <Paper onClick={toggleAddEntry} sx={{height:'75px', cursor:'pointer', background: 'linear-gradient(90deg, #9469FF, #3968FE)', borderRadius:'20px'}}>
                         <Stack direction="row" sx={{width:'full', height:'75px'}} alignItems={"center"} justifyContent={"center"}>
                             {addEntryToggle && (
                                 <TextField onChange={changeValue} sx={{input: {color:'white'}}}/>
                             )}
                             {!addEntryToggle && (
-                                 <Typography onClick={toggleAddEntry} sx={{color:'white'}}>+ Add Entry</Typography>
+                                 <Typography sx={{color:'white'}}>+ Add Entry</Typography>
                             )}
                         </Stack>
                     </Paper>
@@ -127,11 +133,17 @@ export default function Cj() {
                         </Stack>
                     </Paper>
                     </motion.div>
+                    
                 </Stack>
-
-
-
-
+                <Paper sx={{height:'260px', width:'100%', background: 'linear-gradient(90deg, #9469FF, #3968FE)', borderRadius:'20px'}}>
+                    <Stack pt={0.5} direction="row" justifyContent={'space-between'}>
+                        <Typography pl={2} sx={{color:'white', fontWeight:'300'}}>Table of contents</Typography>
+                    </Stack>
+                    <Stack direction="column" sx={{ height:'240px'}} alignItems="center" justifyContent="center">
+                        {/* <Linegraph data={userData} filter="cj" color="#0f0" /> */}
+                        <Typography sx={{color:'white'}}>coming soon!</Typography>
+                    </Stack>
+                </Paper>
             </Stack>
         </div>
     )
